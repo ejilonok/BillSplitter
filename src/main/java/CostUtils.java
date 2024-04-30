@@ -10,10 +10,10 @@ public class CostUtils {
         // 1,21,31... рубль
         // 2,3,4,22,23,24,32,33,34... рубля
 
-        int costRubLast2Digits = costRub / 100;
+        int costRubLast2Digits = costRub % 100;
         int costRubLastDigit = costRub % 10;
 
-        if (((costRubLast2Digits >=5) && (costRub <= 20)) || (costRubLastDigit == 0) || (costRubLastDigit >= 5)) {
+        if (((costRubLast2Digits >=5) && (costRubLast2Digits <= 20)) || (costRubLastDigit == 0) || (costRubLastDigit >= 5)) {
             resultRub = String.format("%.2f рублей", cost).replace(',','.');
         } else if (costRubLastDigit == 1) {
             resultRub = String.format("%.2f рубль", cost).replace(',','.');
@@ -21,7 +21,7 @@ public class CostUtils {
             resultRub = String.format("%.2f рубля", cost).replace(',','.');
         }
 
-        /*
+        /* Здесь был код для работы и с копейками тоже
         if (((costRubLast2Digits >=5) && (costRub <= 20)) || (costRubLastDigit == 0) || (costRubLastDigit >= 5)) {
             resultRub = costRub + " рублей ";
         } else if (costRubLastDigit == 1) {
@@ -45,30 +45,11 @@ public class CostUtils {
         return resultRub;
     }
 
-    static boolean hasKopParts(double cost) {
+    public static boolean hasKopParts(double cost) {
         return (cost - costFloorToKop(cost)) != 0.0;
     }
 
-    static double costFloorToKop(double cost) {
+    public static double costFloorToKop(double cost) {
         return Math.floor(cost * 100.0) / 100.0;
-    }
-
-    static double[] costPart(double cost, int partCount) {
-        double[] parts = new double[partCount];
-        double costPart = costFloorToKop( cost / (double) partCount );
-
-        cost = cost - costPart * partCount;
-        for (int i = 0; i < partCount; i++) {
-            parts[i] = costPart;
-            /* Проверяем, что остаток от распределения меньше копейки.
-            Так как мы хранили данные в double существует ошибка представления данных и разница
-             должна быть меньше копейки. */
-            if ( cost >= 0.01) {
-                parts[i] += 0.01;
-                cost -= 0.01;
-            }
-        }
-
-        return parts;
     }
 }
