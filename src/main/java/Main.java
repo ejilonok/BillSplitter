@@ -1,6 +1,8 @@
+// import UserTextInterface;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        UserTextInterface ui = new UserTextInterface();
+        ui.start();
     }
 }
